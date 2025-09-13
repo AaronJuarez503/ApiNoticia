@@ -29,10 +29,12 @@ public class NoticiaService implements INoticiaService {
 
     @Override
     public NoticiaSalida crear(NoticiaGuardar noticiaGuardar) {
-        Noticia noticia = noticiaRepository.save(modelMapper.map(noticiaGuardar, Noticia.class));
+        Noticia noticia = modelMapper.map(noticiaGuardar, Noticia.class);
+        noticia.setId(null);
 
-        return modelMapper.map(noticia, NoticiaSalida.class);
+        return modelMapper.map(noticiaRepository.save(noticia), NoticiaSalida.class);
     }
+
 
 
     @Override
