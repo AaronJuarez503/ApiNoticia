@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class NoticiaController {
     @Autowired
     private INoticiaService noticiaService;
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','USUARIO')")
     @GetMapping
     public ResponseEntity<Page<NoticiaSalida>> mostrarTodosPaginados(Pageable pageable){
         Page<NoticiaSalida> noticias = noticiaService.obtenerTodosPaginado(pageable);
@@ -36,6 +38,7 @@ public class NoticiaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','USUARIO')")
     @GetMapping("/lista")
     public ResponseEntity<List<NoticiaSalida>> mostrarTodos() {
         List<NoticiaSalida> noticias = noticiaService.obtenerTodos();
@@ -46,6 +49,7 @@ public class NoticiaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','USUARIO')")
     @GetMapping("/{id}")
     public ResponseEntity<NoticiaSalida> mostrarPorId(@PathVariable Integer id){
         NoticiaSalida noticia = noticiaService.obtenerPorId(id);
@@ -56,6 +60,7 @@ public class NoticiaController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping
     public ResponseEntity<NoticiaSalida> crear(@RequestBody NoticiaGuardar noticiaGuardar){
         NoticiaSalida noticia = noticiaService.crear(noticiaGuardar);
@@ -67,6 +72,7 @@ public class NoticiaController {
         return ResponseEntity.internalServerError().build();
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/{id}")
     public ResponseEntity<NoticiaSalida> editar(@PathVariable Integer id, @RequestBody NoticiaModificar noticiaModificar) {
         NoticiaSalida noticia = noticiaService.editar(noticiaModificar);
@@ -78,6 +84,7 @@ public class NoticiaController {
         return ResponseEntity.internalServerError().build();
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity eliminar(@PathVariable Integer id){
         noticiaService.eliminarPorId(id);
