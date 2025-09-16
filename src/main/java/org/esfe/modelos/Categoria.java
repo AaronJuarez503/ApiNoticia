@@ -15,6 +15,6 @@ public class Categoria {
     private Integer id;
     private String nombre;
 
-    // @OneToMany(mappedBy = "categoria")
-    // private List<Noticia> noticias;
+    @OneToMany(mappedBy = "categoria")
+    private List<Noticia> noticias;
 }
